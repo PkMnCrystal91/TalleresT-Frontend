@@ -1,12 +1,16 @@
-import './App.css';
+import "./App.css";
 import MovieForm from "./components/MovieForm";
+import { Sidebar } from "./components/Sidebar";
+import { AppRouter } from "./router/AppRouter";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
-    <div>
-      <h1 className='header'>Películas</h1>
-      <MovieForm />
-    </div>
+    <BrowserRouter>
+      <Sidebar>
+        <AppRouter />
+      </Sidebar>
+    </BrowserRouter>
   );
 }
 
