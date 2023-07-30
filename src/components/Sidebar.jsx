@@ -1,22 +1,26 @@
 import { useState, useEffect } from "react";
-import { FaHome, FaWpforms, FaBars } from "react-icons/fa";
+import { FaHome, FaWpforms, FaBars, FaArchive } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { getOptions } from "../api/Api";
+import { useContext } from "react";
+import { UserContext } from "../context/userContext";
 
 import "../styles/Sidebar.css";
 
 export const Sidebar = ({ children }) => {
-  const [menuOptions, setMenuOptions] = useState([]);
+  const { user } = useContext(UserContext);
+
+  console.log(user.rol);
+
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
-  useEffect(() => {
+  /* const [menuOptions, setMenuOptions] = useState([]); */
+  /* useEffect(() => {
     getOptions().then((resp) => {
       setMenuOptions(resp);
     });
-  }, []);
-
-  let { name } = menuOptions;
+  }, []); */
 
   const menuItem = [
     {
@@ -28,6 +32,24 @@ export const Sidebar = ({ children }) => {
       path: "/form",
       name: "Form",
       icon: <FaWpforms />,
+    },
+  ];
+
+  const superAdminLink = [
+    {
+      path: "/",
+      name: "Movies",
+      icon: <FaHome />,
+    },
+    {
+      path: "/form",
+      name: "Form",
+      icon: <FaWpforms />,
+    },
+    {
+      path: "/renta",
+      name: "Rentas",
+      icon: <FaArchive />,
     },
   ];
 
@@ -48,17 +70,29 @@ export const Sidebar = ({ children }) => {
             <FaBars onClick={toggle} />
           </div>
         </div>
-        {menuItem.map((item, index) => (
-          <NavLink to={item.path} key={index} className="link">
-            <div className="icon">{item.icon}</div>
-            <div
-              style={{ display: isOpen ? "block" : "none" }}
-              className="link_text"
-            >
-              {item.name}
-            </div>
-          </NavLink>
-        ))}
+        {user.rol === "administrador"
+          ? menuItem.map((item, index) => (
+              <NavLink to={item.path} key={index} className="link">
+                <div className="icon">{item.icon}</div>
+                <div
+                  style={{ display: isOpen ? "block" : "none" }}
+                  className="link_text"
+                >
+                  {item.name}
+                </div>
+              </NavLink>
+            ))
+          : superAdminLink.map((item, index) => (
+              <NavLink to={item.path} key={index} className="link">
+                <div className="icon">{item.icon}</div>
+                <div
+                  style={{ display: isOpen ? "block" : "none" }}
+                  className="link_text"
+                >
+                  {item.name}
+                </div>
+              </NavLink>
+            ))}
       </div>
 
       <main>{children}</main>

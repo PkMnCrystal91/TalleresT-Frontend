@@ -3,31 +3,30 @@ import { HomePage } from "../pages/HomePage";
 import MovieForm from "../components/MovieForm";
 import { Sidebar } from "../components/Sidebar";
 import { RentaPeliculas } from "../pages/RentaPeliculas";
+import { useContext } from "react";
+import { UserContext } from "../context/userContext";
 
 export const AppRouter = () => {
-  const usuario = "administrador";
+  const { user } = useContext(UserContext);
 
   return (
-    <>
-      <Sidebar>
-        <Routes>
-          {usuario === "administrador" ? (
-            <>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/*" element={<Navigate to="/" />} />
-              <Route path="/form" element={<MovieForm />} />
-            </>
-          ) : (
-            <>
-              <Route
-                path="/renta"
-                element={<RentaPeliculas usuario={usuario} />}
-              />
-              <Route path="/*" element={<Navigate to="/" />} />
-            </>
-          )}
-        </Routes>
-      </Sidebar>
-    </>
+    <Sidebar>
+      <Routes>
+        {user.rol === "administrad" ? (
+          <>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/form" element={<MovieForm />} />
+            <Route path="/*" element={<Navigate to="/" />} />
+          </>
+        ) : (
+          <>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/form" element={<MovieForm />} />
+            <Route path="/renta" element={<RentaPeliculas />} />
+            <Route path="/*" element={<Navigate to="/" />} />
+          </>
+        )}
+      </Routes>
+    </Sidebar>
   );
 };

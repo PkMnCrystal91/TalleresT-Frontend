@@ -44,7 +44,7 @@ const MovieForm = () => {
       />
       <form
         onSubmit={movieSubmit}
-        className="row needs-validation p-4 mt-4"
+        className="row needs-validation p-4 "
         id="miFormulario"
       >
         <div className="col-11 mx-auto mb-4 row d-flex justify-content-center mt-4">
