@@ -10,8 +10,7 @@ import "../styles/Sidebar.css";
 export const Sidebar = ({ children }) => {
   const { user } = useContext(UserContext);
 
-  console.log(user.rol);
-
+  const [isButtonEnabled, setButtonEnabled] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
@@ -55,10 +54,7 @@ export const Sidebar = ({ children }) => {
 
   return (
     <div className="container px-0 mx-0">
-      <div
-        style={{ width: isOpen ? "200px" : "50px" }}
-        className="sidebar sticky-start"
-      >
+      <div style={{ width: isOpen ? "200px" : "50px" }} className="sidebar">
         <div className="top_section">
           <h1
             style={{ display: isOpen ? "block" : "none" }}
@@ -70,9 +66,24 @@ export const Sidebar = ({ children }) => {
             <FaBars onClick={toggle} />
           </div>
         </div>
+        <div className="toggle-box mb-3">
+          <button
+            className="btn btn-light border-dark-subtle"
+            onClick={() => setButtonEnabled(!isButtonEnabled)}
+          >
+            {isButtonEnabled ? "Disable" : "Enable"}
+          </button>
+        </div>
         {user.rol === "administrador"
           ? menuItem.map((item, index) => (
-              <NavLink to={item.path} key={index} className="link">
+              <NavLink
+                to={item.path}
+                key={index}
+                className={`link ${
+                  isButtonEnabled ? "enabled-button" : "disabled-button"
+                }`}
+                disabled={!isButtonEnabled}
+              >
                 <div className="icon">{item.icon}</div>
                 <div
                   style={{ display: isOpen ? "block" : "none" }}
