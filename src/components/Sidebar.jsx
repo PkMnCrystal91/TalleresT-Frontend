@@ -1,26 +1,27 @@
-import React, { useState } from "react";
-import {
-  FaTh,
-  FaHome,
-  FaWpforms,
-  FaBars,
-  FaUserAlt,
-  FaRegChartBar,
-  FaCommentAlt,
-  FaShoppingBag,
-  FaThList,
-} from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { FaHome, FaWpforms, FaBars } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import { getOptions } from "../api/Api";
 
 import "../styles/Sidebar.css";
 
 export const Sidebar = ({ children }) => {
+  const [menuOptions, setMenuOptions] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+
+  useEffect(() => {
+    getOptions().then((resp) => {
+      setMenuOptions(resp);
+    });
+  }, []);
+
+  let { name } = menuOptions;
+
   const menuItem = [
     {
       path: "/",
-      name: "Home",
+      name: "Movies",
       icon: <FaHome />,
     },
     {
@@ -32,7 +33,10 @@ export const Sidebar = ({ children }) => {
 
   return (
     <div className="container px-0 mx-0">
-      <div style={{ width: isOpen ? "200px" : "50px" }} className="sidebar">
+      <div
+        style={{ width: isOpen ? "200px" : "50px" }}
+        className="sidebar sticky-start"
+      >
         <div className="top_section">
           <h1
             style={{ display: isOpen ? "block" : "none" }}
@@ -56,6 +60,7 @@ export const Sidebar = ({ children }) => {
           </NavLink>
         ))}
       </div>
+
       <main>{children}</main>
     </div>
   );

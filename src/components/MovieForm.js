@@ -1,97 +1,145 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import { useForm } from "../hooks/useForm";
 import { handleSubmit } from "../api/Api";
+import { toastService } from "../helpers/toastService";
 
-const FormWrapper = styled.div`
-  max-width: 400px;
-  margin: 0 auto;
-`;
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const FormField = styled.div`
-  margin-bottom: 20px;
-`;
+import "../styles/Form.css";
 
-const Label = styled.label`
-  display: block;
-  margin-bottom: 5px;
-`;
-
-const Input = styled.input`
-  padding: 8px;
-  border: 1px solid #ccc;
-  width: 100%;
-`;
-
-const Button = styled.button`
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-`;
+const movieInfo = {
+  name: "",
+  duration: "",
+  budget: "",
+  released_date: "",
+};
 
 const MovieForm = () => {
-    const [formData, setFormData] = useState({
-        name: "",
-        date: "",
-        duration: "",
-        budget: ""
-    });
+  const { name, duration, budget, released_date, onInputChange, onResetForm } =
+    useForm(movieInfo);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+  const movieSubmit = (event) => {
+    event.preventDefault();
+    handleSubmit({ name, budget, released_date, duration });
+    onResetForm();
+    toastService("La película fue guardada correctamente");
+  };
 
-    const handleFormSubmit = async () => {
-        try {
-            await handleSubmit(formData);
-        } catch (error) {
-            console.error("Error submitting data:", error);
-        }
-    };
+  return (
+    <div
+      id="container"
+      className="container-fluid d-flex justify-content-center align-items-center"
+    >
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <form
+        onSubmit={movieSubmit}
+        className="row needs-validation p-4 mt-4"
+        id="miFormulario"
+      >
+        <div className="col-11 mx-auto mb-4 row d-flex justify-content-center mt-4">
+          <div className="label-box col-12 col-md-2 text-end">
+            <label className="mt-1 fs-5">Name:</label>
+          </div>
+          <div className="col-12 col-md-8">
+            <input
+              type="text"
+              name="name"
+              value={name}
+              onChange={onInputChange}
+              placeholder="Please enter a code"
+              className="form-control"
+              required
+            />
+            <div className="valid-feedback">Approved!</div>
+            <div className="invalid-feedback">Please enter the field</div>
+          </div>
+        </div>
 
-    return (
-        <FormWrapper>
-            <FormField>
-                <Label>Nombre:</Label>
-                <Input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                />
-            </FormField>
-            <FormField>
-                <Label>Fecha de estreno:</Label>
-                <Input
-                    type="text"
-                    name="date"
-                    value={formData.date}
-                    onChange={handleChange}
-                />
-            </FormField>
-            <FormField>
-                <Label>Duración (minutos):</Label>
-                <Input
-                    type="number"
-                    name="duration"
-                    value={formData.duration}
-                    onChange={handleChange}
-                />
-            </FormField>
-            <FormField>
-                <Label>Presupuesto:</Label>
-                <Input
-                    type="number"
-                    name="budget"
-                    value={formData.budget}
-                    onChange={handleChange}
-                />
-            </FormField>
-            <Button onClick={handleFormSubmit}>Guardar</Button>
-        </FormWrapper>
-    );
+        <div className="col-11 mx-auto mb-4 row d-flex justify-content-center">
+          <div className="label-box col-12 col-md-2 text-end">
+            <label className="mt-1 fs-5">Duration:</label>
+          </div>
+          <div className="col-12 col-md-8">
+            <input
+              type="number"
+              name="duration"
+              value={duration}
+              onChange={onInputChange}
+              placeholder="Please enter a description"
+              className="form-control"
+              id="validationCustom01"
+              required
+            />
+            <div className="valid-feedback">Approved!</div>
+            <div className="invalid-feedback">Please enter the field</div>
+          </div>
+        </div>
+
+        <div className="col-11 mx-auto mb-4 row d-flex justify-content-center">
+          <div className="label-box col-12 col-md-2 text-end">
+            <label className="mt-1 fs-5">Budget:</label>
+          </div>
+          <div className="col-12 col-md-8">
+            <input
+              type="number"
+              name="budget"
+              value={budget}
+              onChange={onInputChange}
+              placeholder="Please enter a description"
+              className="form-control"
+              id="validationCustom01"
+              required
+            />
+            <div className="valid-feedback">Approved!</div>
+            <div className="invalid-feedback">Please enter the field</div>
+          </div>
+        </div>
+
+        <div className="col-11 mx-auto mb-4 row d-flex justify-content-center">
+          <div className="label-box col-12 col-md-2 text-end">
+            <label className="mt-1 fs-5">Date:</label>
+          </div>
+          <div className="col-12 col-md-8">
+            <input
+              type="date"
+              name="released_date"
+              value={released_date}
+              onChange={onInputChange}
+              placeholder="Please enter a description"
+              className="form-control"
+              id="validationCustom01"
+              required
+            />
+            <div className="valid-feedback">Approved!</div>
+            <div className="invalid-feedback">Please enter the field</div>
+          </div>
+        </div>
+
+        <div className="col-12 col-md-11 mx-auto row mx-auto d-flex justify-content-between my-2">
+          <button className="btn btn-primary col-12 col-md-2" type="submit">
+            Submit
+          </button>
+          <button
+            onClick={onResetForm}
+            className="btn btn-danger col-12 col-md-2"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 };
 
 export default MovieForm;

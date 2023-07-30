@@ -1,0 +1,54 @@
+#container {
+  height: 100vh;
+
+  color: white;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: auto;
+}
+
+label: {
+}
+
+label:hover {
+  cursor: pointer;
+  color: #f1c841;
+}
+
+form {
+  max-width: 821px;
+  min-width: 375px;
+  color: #20232a;
+  position: relative;
+}
+
+.form-title {
+  position: absolute;
+  top: -21px;
+  background: #20232a;
+  width: 14rem;
+}
+
+@media (max-width: 767px) {
+  form {
+    border: none;
+  }
+
+  .form-title {
+    position: static;
+    text-shadow: none;
+  }
+
+  .btn-primary {
+    margin-bottom: 8px;
+  }
+
+  .label-box {
+    display: flex;
+    justify-content: start;
+  }
+}

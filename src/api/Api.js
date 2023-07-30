@@ -1,5 +1,6 @@
 import axios from "axios";
 const API_ENDPOINT_MOVIES = "http://localhost:3010/api/movies";
+const API_ENDPOINT_OPTIONS = "http://localhost:3010/api/options";
 
 export const handleSubmit = async (formData) => {
   try {
@@ -25,8 +26,31 @@ export const handleSubmit = async (formData) => {
   }
 };
 
-export const getMovies = () => {
+export const getMovies = (page) => {
   const url = API_ENDPOINT_MOVIES;
+  return axios
+    .get(url + `?page=${page}&limit=6`)
+    .then((response) => response.data)
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const getMovieByDate = (date) => {
+  const url = API_ENDPOINT_MOVIES;
+
+  return axios
+    .get(url + `?date=${date}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      throw error;
+    });
+};
+
+//  ENDPOINTS PARA OPCIONES
+
+export const getOptions = () => {
+  const url = API_ENDPOINT_OPTIONS;
 
   return axios
     .get(url)
